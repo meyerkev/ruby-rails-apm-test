@@ -7,10 +7,11 @@ module Api
 
       def tokenize
         unless valid_test_card?(payment_method_params[:card_number])
-          return render_error(
+          render_error(
             'Only test cards are allowed',
             :unprocessable_entity
           )
+          return
         end
 
         begin
@@ -19,22 +20,31 @@ module Api
           StatsD.increment('payment_method.tokenized')
 
           render json: successful_response(spreedly_response, stored_token)
+          return
         rescue SpreedlyError => e
           render_error('Spreedly tokenization error', :internal_server_error)
+          return 
         rescue StandardError => e
           Rails.logger.info(e)
           render_error('Unexpected error occurred', :internal_server_error)
+          return
         end
       end
 
       private
 
       def authenticate_request
-        render json: {} , status: :internal_server_error unless request.authorization.present?
+        unless request.authorization.present?
+          render_error('Authorization header missing', :unauthorized )
+          return 
+        end
 
         username, password = ActionController::HttpAuthentication::Basic.user_name_and_password(request)
 
-        render json: {} , status: :internal_server_error unless username == ENV['DEVELOPMENT_USERNAME'] && password == ENV['DEVELOPMENT_PASSWORD']
+        unless username == ENV['DEVELOPMENT_USERNAME'] && password == ENV['DEVELOPMENT_PASSWORD']
+          render_error('Invalid credentials', :unauthorized )
+          return 
+        end
       end
 
       def payment_method_params
@@ -84,6 +94,7 @@ module Api
         render json: {
           error: message
         }, status: status
+        return
       end
     end
   end
