@@ -14,11 +14,11 @@ module Api
         end
 
         begin
-          spreedly_response = tokenize_payment_method
-          stored_token = mock_store_payment_method(spreedly_response)
+          test_response = tokenize_payment_method
+          stored_token = mock_store_payment_method(test_response)
           StatsD.increment('payment_method.tokenized')
 
-          render json: successful_response(spreedly_response, stored_token)
+          render json: successful_response(test_response, stored_token)
           return
         rescue TESTError => e
           render_error('TEST tokenization error', :internal_server_error)
@@ -57,15 +57,15 @@ module Api
       end
 
       def tokenize_payment_method
-        spreedly_service.tokenize_card(payment_method_params)
+        test_service.tokenize_card(payment_method_params)
       end
 
-      def spreedly_service
-        @spreedly_service ||= TESTService.new
+      def test_service
+        @test_service ||= TESTService.new
       end
 
-      def mock_store_payment_method(spreedly_response)
-        payment_token = spreedly_response.dig('transaction', 'payment_method', 'token')
+      def mock_store_payment_method(test_response)
+        payment_token = test_response.dig('transaction', 'payment_method', 'token')
         stored_payment = PaymentMethod.new(
           token: payment_token,
           last_four: payment_method_params[:card_number]&.last(4)
@@ -73,10 +73,10 @@ module Api
         stored_payment.id
       end
 
-      def successful_response(spreedly_response, stored_token)
+      def successful_response(test_response, stored_token)
         {
           status: 'success',
-          payment_method_token: spreedly_response.dig('transaction', 'payment_method', 'token'),
+          payment_method_token: test_response.dig('transaction', 'payment_method', 'token'),
           stored_id: stored_token,
           created_at: Time.current.iso8601
         }

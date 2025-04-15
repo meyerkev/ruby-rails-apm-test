@@ -1,13 +1,13 @@
-# app/services/spreedly_service.rb
+# app/services/test_service.rb
 require 'httparty'
 
 class TESTService
   include HTTParty
-  base_uri 'https://core.spreedly.com/v1'
+  base_uri 'https://core.test.com/v1'
   format :json
   
   def initialize
-    @environment_key = ENV.fetch('SPREEDLY_ENVIRONMENT_KEY')
+    @environment_key = ENV.fetch('TEST_ENVIRONMENT_KEY')
   end
 
   def tokenize_card(card_params)
@@ -51,7 +51,7 @@ class TESTService
   def handle_response(response)
     case response.code
     when 200, 201
-      StatsD.increment('spreedly.success')
+      StatsD.increment('test.success')
       response.parsed_response
     when 401, 403
       raise TESTError.new('Authentication failed', 'AUTH_ERROR')
@@ -61,7 +61,7 @@ class TESTService
     when 429
       raise TESTError.new('Rate limit exceeded', 'RATE_LIMIT')
     else
-      StatsD.increment('spreedly.failure')
+      StatsD.increment('test.failure')
       Rails.logger.error "TEST API error: #{response.code} - #{response.body}"
       raise TESTError.new('Unexpected error', 'API_ERROR')
     end
