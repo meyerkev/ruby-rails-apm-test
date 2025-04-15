@@ -29,7 +29,7 @@ RSpec.describe Api::V1::PaymentMethodsController do
       end
 
       context 'with valid test card' do
-        let(:spreedly_response) do
+        let(:test_response) do
           {
             'transaction' => {
               'payment_method' => {
@@ -40,7 +40,7 @@ RSpec.describe Api::V1::PaymentMethodsController do
         end
 
         before do
-          allow_any_instance_of(SpreedlyService).to receive(:tokenize_card).and_return(spreedly_response)
+          allow_any_instance_of(TESTService).to receive(:tokenize_card).and_return(test_response)
           allow(PaymentMethod).to receive(:new).and_return(double(id: 123))
         end
 

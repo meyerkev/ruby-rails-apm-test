@@ -1,7 +1,7 @@
 # app/services/spreedly_service.rb
 require 'httparty'
 
-class SpreedlyService
+class TESTService
   include HTTParty
   base_uri 'https://core.spreedly.com/v1'
   format :json
@@ -23,9 +23,9 @@ class SpreedlyService
     response = self.class.post('/payment_methods.json', options)
     handle_response(response)
   rescue Net::OpenTimeout, Net::ReadTimeout
-    raise SpreedlyError.new('Request timed out', 'TIMEOUT')
+    raise TESTError.new('Request timed out', 'TIMEOUT')
   rescue SocketError
-    raise SpreedlyError.new('Connection failed', 'CONNECTION_ERROR')
+    raise TESTError.new('Connection failed', 'CONNECTION_ERROR')
   end
 
   private
@@ -54,16 +54,16 @@ class SpreedlyService
       StatsD.increment('spreedly.success')
       response.parsed_response
     when 401, 403
-      raise SpreedlyError.new('Authentication failed', 'AUTH_ERROR')
+      raise TESTError.new('Authentication failed', 'AUTH_ERROR')
     when 422
       error_message = extract_error_message(response)
-      raise SpreedlyError.new(error_message, 'VALIDATION_ERROR')
+      raise TESTError.new(error_message, 'VALIDATION_ERROR')
     when 429
-      raise SpreedlyError.new('Rate limit exceeded', 'RATE_LIMIT')
+      raise TESTError.new('Rate limit exceeded', 'RATE_LIMIT')
     else
       StatsD.increment('spreedly.failure')
-      Rails.logger.error "Spreedly API error: #{response.code} - #{response.body}"
-      raise SpreedlyError.new('Unexpected error', 'API_ERROR')
+      Rails.logger.error "TEST API error: #{response.code} - #{response.body}"
+      raise TESTError.new('Unexpected error', 'API_ERROR')
     end
   end
 
@@ -74,7 +74,7 @@ class SpreedlyService
   end
 end
 
-class SpreedlyError < StandardError
+class TESTError < StandardError
   attr_reader :code
   
   def initialize(message, code)

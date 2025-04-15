@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a Ruby on Rails API service that handles payment method tokenization using Spreedly.
+This is a Ruby on Rails API service that handles payment method tokenization using TEST.
 
 ## Setup
 

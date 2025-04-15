@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe SpreedlyService do
-  let(:service) { SpreedlyService.new }
+RSpec.describe TESTService do
+  let(:service) { TESTService.new }
   let(:card_params) do
     {
       card_number: '4111111111111111',
@@ -63,10 +63,10 @@ RSpec.describe SpreedlyService do
           )
       end
 
-      it 'raises a SpreedlyError with the error message' do
+      it 'raises a TESTError with the error message' do
         expect {
           service.tokenize_card(card_params)
-        }.to raise_error(SpreedlyError, 'Invalid card number')
+        }.to raise_error(TESTError, 'Invalid card number')
       end
     end
   end
