@@ -28,7 +28,7 @@ RSpec.describe TESTService do
     end
 
     before do
-      stub_request(:post, "https://core.spreedly.com/v1/payment_methods.json")
+      stub_request(:post, "https://core.test.com/v1/payment_methods.json")
         .with(
           headers: {
             'Content-Type' => 'application/json',
@@ -48,12 +48,12 @@ RSpec.describe TESTService do
     end
 
     it 'successfully increments success metric' do
-      expect { service.tokenize_card(card_params) }.to trigger_statsd_increment('spreedly.success')
+      expect { service.tokenize_card(card_params) }.to trigger_statsd_increment('test.success')
     end
 
     context 'when API returns an error' do
       before do
-        stub_request(:post, "https://core.spreedly.com/v1/payment_methods.json")
+        stub_request(:post, "https://core.test.com/v1/payment_methods.json")
           .to_return(
             status: 422,
             body: {

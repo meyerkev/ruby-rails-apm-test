@@ -24,14 +24,11 @@ config/master.key
 # Only include if you have production secrets in this file, which is no longer a Rails default
 # config/secrets.yml
 
-<<<<<<< HEAD
 # dotenv, dotenv-rails
 # TODO Comment out these rules if environment variables can be committed
 # .env
 # .env*.local
 
-=======
->>>>>>> 29460cc (What I was given)
 ## Environment normalization:
 /.bundle
 /vendor/bundle
