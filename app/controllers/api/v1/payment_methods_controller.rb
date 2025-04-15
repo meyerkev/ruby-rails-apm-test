@@ -19,8 +19,10 @@ module Api
           StatsD.increment('payment_method.tokenized')
 
           render json: successful_response(spreedly_response, stored_token)
-        rescue SpreedlyError => e
-          render_error('Spreedly tokenization error', :internal_server_error)
+          return
+        rescue TESTError => e
+          render_error('TEST tokenization error', :internal_server_error)
+          return 
         rescue StandardError => e
           Rails.logger.info(e)
           render_error('Unexpected error occurred', :internal_server_error)
@@ -59,7 +61,7 @@ module Api
       end
 
       def spreedly_service
-        @spreedly_service ||= SpreedlyService.new
+        @spreedly_service ||= TESTService.new
       end
 
       def mock_store_payment_method(spreedly_response)

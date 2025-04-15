@@ -4,7 +4,7 @@ This work sample evaluates your ability to identify gaps in instrumentation, det
 
 ## Scenario
 
-At Spreedly, automation is a cornerstone of ensuring quality and reliability in our payment orchestration platform. Your task is to assess a sample application, implement changes in support of observability (assume distributed tracing is supported and the host agent is properly configured), and highlight issues with moving this application to production. The application given to you is a Ruby on Rails web app that accepts an API request at http://localhost:3000/api/v1/payment_methods/tokenize with a payment method body. It then makes an API request to Spreedly to attempt to tokenize the payment method information and returns a response indicating its status. 
+At TEST, automation is a cornerstone of ensuring quality and reliability in our payment orchestration platform. Your task is to assess a sample application, implement changes in support of observability (assume distributed tracing is supported and the host agent is properly configured), and highlight issues with moving this application to production. The application given to you is a Ruby on Rails web app that accepts an API request at http://localhost:3000/api/v1/payment_methods/tokenize with a payment method body. It then makes an API request to TEST to attempt to tokenize the payment method information and returns a response indicating its status. 
 
 ## Your Task
 
@@ -14,7 +14,7 @@ At Spreedly, automation is a cornerstone of ensuring quality and reliability in 
 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b. Initialize git in your application and save the current changes as the first commit on the default branch.
   
-  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(git init, git add ., git commit -m “my commit message”)
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(git init, git add ., git commit -m "my commit message")
 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c. Check out a new branch locally (git checkout -b work-sample)
 
